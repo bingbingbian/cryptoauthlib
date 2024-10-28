@@ -68,43 +68,38 @@ if CRYPTOAUTHLIB
     # Device enablement
     config CRYPTOAUTHLIB_ATSHA204A_SUPPORT
         bool "Include support for ATSHA204A device"
-        default y
+        default n
 
     config CRYPTOAUTHLIB_ATSHA206A_SUPPORT
         bool "Include support for ATSHA206A device"
-        default y
+        default n
 
     config CRYPTOAUTHLIB_ATECC108A_SUPPORT
         bool "Include support for ATECC108A device"
-        default y
+        default n
 
     config CRYPTOAUTHLIB_ATECC508A_SUPPORT
         bool "Include support for ATECC508A device"
-        default y
+        default n
 
     config CRYPTOAUTHLIB_ATECC608_SUPPORT
         bool "Include support for ATECC608 device"
         default y
 
-    config CRYPTOAUTHLIB_ATECC608A_SUPPORT
-        bool "Include support for ATECC608A device"
-        select CRYPTOAUTHLIB_ATECC608_SUPPORT
-        default n
-
     config CRYPTOAUTHLIB_ECC204_SUPPORT
         bool "Include support for ECC204 device"
-        default y
+        default n
 
     config CRYPTOAUTHLIB_TA010_SUPPORT
         bool "Include support for TA010 device"
-        default y
+        default n
 
     config CRYPTOAUTHLIB_SHA104_SUPPORT
         bool "Include support for SHA104 device"
-        default y
+        default n
 
     config CRYPTOAUTHLIB_SHA105_SUPPORT
         bool "Include support for SHA105 device"
-        default y
+        default n
 
 endif

@@ -84,11 +84,6 @@ if(CONFIG_CRYPTOAUTHLIB)
     else()
         set(ATCA_ATECC608_SUPPORT OFF CACHE INTERNAL "")
     endif()
-    if (CONFIG_CRYPTOAUTHLIB_ATECC608A_SUPPORT)
-        set(ATCA_ATECC608A_SUPPORT ON CACHE INTERNAL "")
-    else()
-        set(ATCA_ATECC608A_SUPPORT OFF CACHE INTERNAL "")
-    endif()
     if (CONFIG_CRYPTOAUTHLIB_ECC204_SUPPORT)
         set(ATCA_ECC204_SUPPORT ON CACHE INTERNAL "")
     else()
@@ -110,10 +105,12 @@ if(CONFIG_CRYPTOAUTHLIB)
         set(ATCA_SHA105_SUPPORT OFF CACHE INTERNAL "")
     endif()
     set(MAX_PACKET_SIZE 1072 CACHE INTERNAL "")
-    check_symbol_exists(malloc "stdlib.h" HAS_MALLOC)
-    check_symbol_exists(free "stdlib.h" HAS_FREE)
+
+    # check_symbol_exists(malloc "stdlib.h" HAS_MALLOC)
+    # check_symbol_exists(free "stdlib.h" HAS_FREE)
     check_symbol_exists(strcasestr "string.h" HAS_STRCASESTR)
     check_symbol_exists(memset_s "string.h" HAS_MEMSET_S)
+
     if(HAS_MALLOC)
         set(ATCA_PLATFORM_MALLOC malloc CACHE STRING "" FORCE)
     else()
@@ -134,28 +131,28 @@ if(CONFIG_CRYPTOAUTHLIB)
     else()
         unset(ATCA_PLATFORM_MEMSET_S)
     endif(HAS_MEMSET_S)
-    configure_file("${CMAKE_CURRENT_LIST_DIR}/../cryptoauthlib/lib/atca_config.h.in" "${CMAKE_CURRENT_BINARY_DIR}/include/atca_config.h")
+    configure_file("${CMAKE_CURRENT_LIST_DIR}/../lib/atca_config.h.in" "${CMAKE_CURRENT_BINARY_DIR}/include/atca_config.h")
 
-    file(GLOB LIB_SRC "${CMAKE_CURRENT_LIST_DIR}/../cryptoauthlib/lib/*.c")
-    file(GLOB CALIB_SRC "${CMAKE_CURRENT_LIST_DIR}/../cryptoauthlib/lib/calib/*.c")
-    file(GLOB CRYPTO_SRC "${CMAKE_CURRENT_LIST_DIR}/../cryptoauthlib/lib/crypto/*.c")
-    file(GLOB CRYPTO_HASHES_SRC "${CMAKE_CURRENT_LIST_DIR}/../cryptoauthlib/lib/crypto/hashes/*.c")
+    file(GLOB LIB_SRC "${CMAKE_CURRENT_LIST_DIR}/../lib/*.c")
+    file(GLOB CALIB_SRC "${CMAKE_CURRENT_LIST_DIR}/../lib/calib/*.c")
+    file(GLOB CRYPTO_SRC "${CMAKE_CURRENT_LIST_DIR}/../lib/crypto/*.c")
+    file(GLOB CRYPTO_HASHES_SRC "${CMAKE_CURRENT_LIST_DIR}/../lib/crypto/hashes/*.c")
 
     zephyr_include_directories("${CMAKE_CURRENT_BINARY_DIR}/include")
-    zephyr_include_directories("${CMAKE_CURRENT_LIST_DIR}/../cryptoauthlib/lib")
-    zephyr_include_directories("${CMAKE_CURRENT_LIST_DIR}/../cryptoauthlib/lib/calib")
-    zephyr_include_directories("${CMAKE_CURRENT_LIST_DIR}/../cryptoauthlib/lib/crypto")
-    zephyr_include_directories("${CMAKE_CURRENT_LIST_DIR}/../cryptoauthlib/lib/crypto/hashes")
+    zephyr_include_directories("${CMAKE_CURRENT_LIST_DIR}/../lib")
+    zephyr_include_directories("${CMAKE_CURRENT_LIST_DIR}/../lib/calib")
+    zephyr_include_directories("${CMAKE_CURRENT_LIST_DIR}/../lib/crypto")
+    zephyr_include_directories("${CMAKE_CURRENT_LIST_DIR}/../lib/crypto/hashes")
     zephyr_library()
     zephyr_library_sources(
         "${LIB_SRC}"
         "${CALIB_SRC}"
         "${CRYPTO_SRC}"
         "${CRYPTO_HASHES_SRC}"
-        "${CMAKE_CURRENT_LIST_DIR}/../cryptoauthlib/lib/hal/atca_hal.c"
-        "${CMAKE_CURRENT_LIST_DIR}/../cryptoauthlib/third_party/hal/zephyr/hal_zephyr.c"
+        "${CMAKE_CURRENT_LIST_DIR}/../lib/hal/atca_hal.c"
+        "${CMAKE_CURRENT_LIST_DIR}/hal/hal_zephyr.c"
     )
-    zephyr_library_sources_ifdef(CONFIG_CRYPTOAUTHLIB_HAL_I2C "${CMAKE_CURRENT_LIST_DIR}/../cryptoauthlib/third_party/hal/zephyr/hal_zephyr_i2c.c")
-    zephyr_library_sources_ifdef(CONFIG_CRYPTOAUTHLIB_HAL_SPI "${CMAKE_CURRENT_LIST_DIR}/../cryptoauthlib/third_party/hal/zephyr/hal_zephyr_spi.c")
+    zephyr_library_sources_ifdef(CONFIG_CRYPTOAUTHLIB_HAL_I2C "${CMAKE_CURRENT_LIST_DIR}/hal/hal_zephyr_i2c.c")
+    zephyr_library_sources_ifdef(CONFIG_CRYPTOAUTHLIB_HAL_SPI "${CMAKE_CURRENT_LIST_DIR}/hal/hal_zephyr_spi.c")
 
 endif()
